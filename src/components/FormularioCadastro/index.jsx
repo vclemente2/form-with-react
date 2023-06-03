@@ -1,8 +1,8 @@
 import styled from "styled-components";
+import { Button, TextField } from "@mui/material";
 
 const FormularioCadastro = styled.form`
   align-items: flex-start;
-  background: lightgrey;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -23,32 +23,25 @@ const FormularioCadastro = styled.form`
 export default function () {
   return (
     <FormularioCadastro>
-      <label for="nome" className="text">
-        Nome
-        <input type="text" id="nome" />
-      </label>
+      <TextField id="nome" label="Nome" />
 
-      <label for="sobrenome" className="text">
-        Sobrenome
-        <input type="text" id="sobrenome" />
-      </label>
+      <TextField id="sobrenome" label="Sobrenome" />
 
-      <label for="cpf" className="text">
-        CPF
-        <input type="text" id="cpf" />
-      </label>
+      <TextField id="cpf" label="CPF" />
 
-      <label for="promocoes">
+      <label htmlFor="promocoes">
         <input type="checkbox" id="promocoes" />
         Receber Promoções
       </label>
 
-      <label for="novidades">
+      <label htmlFor="novidades">
         <input type="checkbox" id="novidades" />
         Receber Novidades
       </label>
 
-      <input type="submit" value="Cadastrar" />
+      <Button variant="contained" type="submit">
+        Cadastrar
+      </Button>
     </FormularioCadastro>
   );
 }
