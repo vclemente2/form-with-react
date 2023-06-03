@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, TextField } from "@mui/material";
+import { Button, FormControlLabel, Switch, TextField } from "@mui/material";
 
 const FormularioCadastro = styled.form`
   align-items: flex-start;
@@ -8,40 +8,36 @@ const FormularioCadastro = styled.form`
   gap: 1rem;
   padding: 2rem;
   width: fit-content;
+  margin: auto;
 
-  & label {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-  }
-
-  & label.text {
-    flex-direction: column;
+  & span {
+    margin: auto;
   }
 `;
 
 export default function () {
   return (
     <FormularioCadastro>
-      <TextField id="nome" label="Nome" />
+      <TextField id="nome" label="Nome" fullWidth />
 
-      <TextField id="sobrenome" label="Sobrenome" />
+      <TextField id="sobrenome" label="Sobrenome" fullWidth />
 
       <TextField id="cpf" label="CPF" />
 
-      <label htmlFor="promocoes">
-        <input type="checkbox" id="promocoes" />
-        Receber Promoções
-      </label>
+      <FormControlLabel
+        control={<Switch defaultChecked />}
+        label="Receber Promoções"
+      />
 
-      <label htmlFor="novidades">
-        <input type="checkbox" id="novidades" />
-        Receber Novidades
-      </label>
-
-      <Button variant="contained" type="submit">
-        Cadastrar
-      </Button>
+      <FormControlLabel
+        control={<Switch defaultChecked />}
+        label="Receber Novidades"
+      />
+      <span>
+        <Button variant="contained" type="submit">
+          Cadastrar
+        </Button>
+      </span>
     </FormularioCadastro>
   );
 }
