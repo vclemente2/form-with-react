@@ -1,9 +1,12 @@
+import { Typography } from "@mui/material";
 import FormularioCadastro from "./components/FormularioCadastro";
 
 function App() {
   return (
     <>
-      <h1 style={{ textAlign: "center" }}>Hello World</h1>
+      <Typography variant="h3" component="h1" align="center">
+        Formulário de Cadastro
+      </Typography>
       <FormularioCadastro />
     </>
   );
