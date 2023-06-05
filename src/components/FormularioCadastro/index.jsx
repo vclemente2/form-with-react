@@ -17,7 +17,7 @@ const FormularioCadastro = styled.form`
   }
 `;
 
-export default function () {
+export default function (props) {
   const [dataForm, setDataForm] = useState({
     nome: "",
     sobrenome: "",
@@ -26,7 +26,7 @@ export default function () {
     novidades: true
   });
 
-  function atualizaDados(event) {
+  function updateData(event) {
     const element = event.target.id;
     const value =
       element === "promocoes" || element === "novidades"
@@ -36,18 +36,18 @@ export default function () {
     setDataForm({ ...dataForm, [element]: value });
   }
 
-  function salvaDados(event) {
+  function sendData(event) {
     event.preventDefault();
-    console.log(dataForm);
+    props.onSubmit(dataForm);
   }
 
   return (
-    <FormularioCadastro onSubmit={salvaDados}>
+    <FormularioCadastro onSubmit={sendData}>
       <TextField
         id="nome"
         label="Nome"
         value={dataForm.nome}
-        onChange={atualizaDados}
+        onChange={updateData}
         required
         fullWidth
       />
@@ -56,7 +56,7 @@ export default function () {
         id="sobrenome"
         label="Sobrenome"
         value={dataForm.sobrenome}
-        onChange={atualizaDados}
+        onChange={updateData}
         fullWidth
       />
 
@@ -64,7 +64,7 @@ export default function () {
         id="cpf"
         label="CPF"
         value={dataForm.cpf}
-        onChange={atualizaDados}
+        onChange={updateData}
         required
         fullWidth
       />
@@ -72,9 +72,8 @@ export default function () {
       <FormControlLabel
         control={
           <Switch
-            defaultChecked
-            onChange={atualizaDados}
-            value={dataForm.promocoes}
+            onChange={updateData}
+            checked={dataForm.promocoes}
             id="promocoes"
           />
         }
@@ -84,9 +83,8 @@ export default function () {
       <FormControlLabel
         control={
           <Switch
-            defaultChecked
-            onChange={atualizaDados}
-            value={dataForm.novidades}
+            onChange={updateData}
+            checked={dataForm.novidades}
             id="novidades"
           />
         }
