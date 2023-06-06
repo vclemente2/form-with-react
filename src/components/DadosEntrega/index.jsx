@@ -2,7 +2,7 @@ import { useState } from "react";
 import StyledForm from "../StyledForm";
 import { Button, TextField } from "@mui/material";
 
-export default function DadosEntrega({ onSubmit }) {
+export default function DadosEntrega({ aoEnviar, dadosColetados }) {
   const [dataForm, setDataForm] = useState({
     cep: "",
     endereco: "",
@@ -16,7 +16,7 @@ export default function DadosEntrega({ onSubmit }) {
     <StyledForm
       onSubmit={(event) => {
         event.preventDefault();
-        onSubmit(dataForm);
+        aoEnviar({ ...dataForm, ...dadosColetados });
       }}
     >
       <TextField

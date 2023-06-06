@@ -5,17 +5,21 @@ import { useState } from "react";
 
 export default function FormularioCadastro({ onSubmit }) {
   const [etapaAtual, setEtapaAtual] = useState(0);
+  const [dadosColetados, setDadosColetados] = useState({});
 
   const formularios = [
-    <DadosUsuario aoEnviar={proximaEtapa} />,
-    <DadosPessoais aoEnviar={proximaEtapa} />,
-    <DadosEntrega onSubmit={onSubmit} />
+    <DadosUsuario aoEnviar={proximaEtapa} coletarDados={coletaDados} />,
+    <DadosPessoais aoEnviar={proximaEtapa} coletarDados={coletaDados} />,
+    <DadosEntrega aoEnviar={onSubmit} dadosColetados={dadosColetados} />
   ];
 
-  function proximaEtapa(data) {
-    console.log(data);
+  return <>{formularios[etapaAtual]}</>;
+
+  function proximaEtapa() {
     setEtapaAtual(etapaAtual + 1);
   }
 
-  return <>{formularios[etapaAtual]}</>;
+  function coletaDados(data) {
+    setDadosColetados({ ...dadosColetados, ...data });
+  }
 }
