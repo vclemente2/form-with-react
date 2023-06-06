@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const DadosUsuario = styled.form`
+const StyledForm = styled.form`
   align-items: flex-start;
   display: flex;
   flex-direction: column;
@@ -14,3 +14,5 @@ export const DadosUsuario = styled.form`
     margin: auto;
   }
 `;
+
+export default StyledForm;

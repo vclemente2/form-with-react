@@ -1,23 +1,8 @@
-import styled from "styled-components";
 import { Button, FormControlLabel, Switch, TextField } from "@mui/material";
 import { useState } from "react";
+import StyledForm from "../StyledForm";
 
-const DadosPessoais = styled.form`
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin: auto;
-  min-width: fit-content;
-  padding: 1rem 2rem;
-  width: 50vw;
-
-  & span {
-    margin: auto;
-  }
-`;
-
-export default function (props) {
+export default function DadosPessoais({ aoEnviar }) {
   const [dataForm, setDataForm] = useState({
     nome: "",
     sobrenome: "",
@@ -41,6 +26,77 @@ export default function (props) {
     }
   });
 
+  return (
+    <StyledForm
+      onSubmit={(event) => {
+        event.preventDefault();
+        aoEnviar(dataForm);
+      }}
+    >
+      <TextField
+        id="nome"
+        label="Nome"
+        value={dataForm.nome}
+        onChange={updateData}
+        required
+        fullWidth
+        error={errors.nome.error}
+        helperText={errors.nome.errorMessage}
+        onBlur={verifyError}
+      />
+
+      <TextField
+        id="sobrenome"
+        label="Sobrenome"
+        value={dataForm.sobrenome}
+        onChange={updateData}
+        fullWidth
+        error={errors.sobrenome.error}
+        helperText={errors.sobrenome.errorMessage}
+        onBlur={verifyError}
+      />
+
+      <TextField
+        id="cpf"
+        label="CPF"
+        value={dataForm.cpf}
+        onChange={updateData}
+        required
+        fullWidth
+        error={errors.cpf.error}
+        helperText={errors.cpf.errorMessage}
+        onBlur={verifyError}
+      />
+
+      <FormControlLabel
+        control={
+          <Switch
+            onChange={updateData}
+            checked={dataForm.promocoes}
+            id="promocoes"
+          />
+        }
+        label="Receber Promoções"
+      />
+
+      <FormControlLabel
+        control={
+          <Switch
+            onChange={updateData}
+            checked={dataForm.novidades}
+            id="novidades"
+          />
+        }
+        label="Receber Novidades"
+      />
+      <span>
+        <Button variant="contained" type="submit">
+          Próximo
+        </Button>
+      </span>
+    </StyledForm>
+  );
+
   function updateData(event) {
     const element = event.target.id;
     const value =
@@ -49,11 +105,6 @@ export default function (props) {
         : event.target.value;
 
     setDataForm({ ...dataForm, [element]: value });
-  }
-
-  function sendData(event) {
-    event.preventDefault();
-    props.onSubmit(dataForm);
   }
 
   function verifyError(event) {
@@ -138,70 +189,4 @@ export default function (props) {
       }
     }
   }
-
-  return (
-    <DadosPessoais onSubmit={sendData}>
-      <TextField
-        id="nome"
-        label="Nome"
-        value={dataForm.nome}
-        onChange={updateData}
-        required
-        fullWidth
-        error={errors.nome.error}
-        helperText={errors.nome.errorMessage}
-        onBlur={verifyError}
-      />
-
-      <TextField
-        id="sobrenome"
-        label="Sobrenome"
-        value={dataForm.sobrenome}
-        onChange={updateData}
-        fullWidth
-        error={errors.sobrenome.error}
-        helperText={errors.sobrenome.errorMessage}
-        onBlur={verifyError}
-      />
-
-      <TextField
-        id="cpf"
-        label="CPF"
-        value={dataForm.cpf}
-        onChange={updateData}
-        required
-        fullWidth
-        error={errors.cpf.error}
-        helperText={errors.cpf.errorMessage}
-        onBlur={verifyError}
-      />
-
-      <FormControlLabel
-        control={
-          <Switch
-            onChange={updateData}
-            checked={dataForm.promocoes}
-            id="promocoes"
-          />
-        }
-        label="Receber Promoções"
-      />
-
-      <FormControlLabel
-        control={
-          <Switch
-            onChange={updateData}
-            checked={dataForm.novidades}
-            id="novidades"
-          />
-        }
-        label="Receber Novidades"
-      />
-      <span>
-        <Button variant="contained" type="submit">
-          Cadastrar
-        </Button>
-      </span>
-    </DadosPessoais>
-  );
 }
