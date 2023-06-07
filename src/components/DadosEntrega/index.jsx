@@ -1,6 +1,6 @@
-import { useState } from "react";
-import StyledForm from "../StyledForm";
 import { Button, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
+import StyledForm from "../StyledForm";
 
 export default function DadosEntrega({ aoEnviar, dadosColetados }) {
   const [dataForm, setDataForm] = useState({
@@ -11,6 +11,15 @@ export default function DadosEntrega({ aoEnviar, dadosColetados }) {
     cidade: "",
     estado: ""
   });
+
+  const [errors, setErrors] = useState({
+    error: false,
+    messageError: ""
+  });
+
+  useEffect(() => {
+    buscarEnderecoPeloCep(dataForm.cep);
+  }, [dataForm.cep]);
 
   return (
     <StyledForm
@@ -24,8 +33,8 @@ export default function DadosEntrega({ aoEnviar, dadosColetados }) {
         label="CEP"
         required
         fullWidth
-        error={false}
-        helperText=""
+        error={errors.error}
+        helperText={errors.messageError}
         value={dataForm.cep}
         onChange={aoAtualizar}
       />
@@ -86,8 +95,44 @@ export default function DadosEntrega({ aoEnviar, dadosColetados }) {
     </StyledForm>
   );
 
-  function aoAtualizar(event) {
+  async function aoAtualizar(event) {
     const element = event.target;
     setDataForm({ ...dataForm, [element.id]: element.value });
+  }
+
+  async function buscarEnderecoPeloCep(cep) {
+    const cepNumber = cep.replaceAll("-", "").replaceAll(".", "");
+    if (cepNumber.length === 8) {
+      try {
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await response.json();
+
+        if (!data.logradouro) throw new Error("CEP Não localizado");
+
+        setDataForm({
+          ...dataForm,
+          endereco: data.logradouro,
+          cidade: data.localidade,
+          estado: data.uf
+        });
+        verificarErros();
+      } catch (error) {
+        setDataForm({
+          ...dataForm,
+          endereco: "",
+          cidade: "",
+          estado: ""
+        });
+        verificarErros(error);
+      }
+    }
+  }
+
+  function verificarErros(error) {
+    if (error) {
+      setErrors({ error: true, messageError: "Cep não localizado." });
+    } else {
+      setErrors({ error: false, messageError: "" });
+    }
   }
 }

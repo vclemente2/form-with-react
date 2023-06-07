@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
-import StyledForm from "../StyledForm";
 import { useState } from "react";
+import StyledForm from "../StyledForm";
 
 export default function DadosUsuario({ aoEnviar }) {
   const [dataForm, setDataForm] = useState({
