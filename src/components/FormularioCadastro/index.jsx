@@ -8,8 +8,8 @@ export default function FormularioCadastro({ onSubmit }) {
   const [dadosColetados, setDadosColetados] = useState({});
 
   const formularios = [
-    <DadosUsuario aoEnviar={proximaEtapa} coletarDados={coletaDados} />,
-    <DadosPessoais aoEnviar={proximaEtapa} coletarDados={coletaDados} />,
+    <DadosUsuario aoEnviar={coletaDados} />,
+    <DadosPessoais aoEnviar={coletaDados} />,
     <DadosEntrega aoEnviar={onSubmit} dadosColetados={dadosColetados} />
   ];
 
@@ -21,5 +21,6 @@ export default function FormularioCadastro({ onSubmit }) {
 
   function coletaDados(data) {
     setDadosColetados({ ...dadosColetados, ...data });
+    proximaEtapa();
   }
 }

@@ -2,7 +2,7 @@ import { Button, FormControlLabel, Switch, TextField } from "@mui/material";
 import { useState } from "react";
 import StyledForm from "../StyledForm";
 
-export default function DadosPessoais({ aoEnviar, coletarDados }) {
+export default function DadosPessoais({ aoEnviar }) {
   const [dataForm, setDataForm] = useState({
     nome: "",
     sobrenome: "",
@@ -30,8 +30,7 @@ export default function DadosPessoais({ aoEnviar, coletarDados }) {
     <StyledForm
       onSubmit={(event) => {
         event.preventDefault();
-        coletarDados(dataForm);
-        aoEnviar();
+        aoEnviar(dataForm);
       }}
     >
       <TextField

@@ -68,7 +68,16 @@ export default function DadosEntrega({ aoEnviar, dadosColetados }) {
         value={dataForm.cidade}
         onChange={aoAtualizar}
       />
-      <TextField id="estado" label="Estado" required fullWidth />
+      <TextField
+        id="estado"
+        label="Estado"
+        required
+        fullWidth
+        error={false}
+        helperText=""
+        value={dataForm.estado}
+        onChange={aoAtualizar}
+      />
       <span>
         <Button type="submit" variant="contained">
           Cadastrar
