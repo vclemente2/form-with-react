@@ -23,7 +23,7 @@ export default function DadosUsuario({ aoEnviar, VerifyError }) {
     <StyledForm
       onSubmit={(event) => {
         event.preventDefault();
-        aoEnviar(dataForm);
+        if (formValidado()) aoEnviar(dataForm);
       }}
     >
       <TextField
@@ -36,7 +36,7 @@ export default function DadosUsuario({ aoEnviar, VerifyError }) {
         helperText={errors.email.errorMessage}
         value={dataForm.email}
         onChange={aoAtualizar}
-        onBlur={checkErrors}
+        onBlur={validarCampos}
       />
       <TextField
         id="senha"
@@ -48,7 +48,7 @@ export default function DadosUsuario({ aoEnviar, VerifyError }) {
         helperText={errors.senha.errorMessage}
         value={dataForm.senha}
         onChange={aoAtualizar}
-        onBlur={checkErrors}
+        onBlur={validarCampos}
       />
       <span>
         <Button variant="contained" type="submit">
@@ -63,8 +63,15 @@ export default function DadosUsuario({ aoEnviar, VerifyError }) {
     setDataForm({ ...dataForm, [element.id]: element.value });
   }
 
-  function checkErrors(event) {
+  function validarCampos(event) {
     const error = VerifyError.DadosUsuario(event);
     setErrors({ ...errors, ...error });
+  }
+
+  function formValidado() {
+    for (const atribute in errors) {
+      if (errors[atribute].error) return false;
+    }
+    return true;
   }
 }

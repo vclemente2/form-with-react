@@ -30,7 +30,7 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
     <StyledForm
       onSubmit={(event) => {
         event.preventDefault();
-        aoEnviar(dataForm);
+        if (formValidado()) aoEnviar(dataForm);
       }}
     >
       <TextField
@@ -42,7 +42,7 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
         fullWidth
         error={errors.nome.error}
         helperText={errors.nome.errorMessage}
-        onBlur={checkErrors}
+        onBlur={validarCampos}
       />
 
       <TextField
@@ -53,7 +53,7 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
         fullWidth
         error={errors.sobrenome.error}
         helperText={errors.sobrenome.errorMessage}
-        onBlur={checkErrors}
+        onBlur={validarCampos}
       />
 
       <TextField
@@ -65,7 +65,7 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
         fullWidth
         error={errors.cpf.error}
         helperText={errors.cpf.errorMessage}
-        onBlur={checkErrors}
+        onBlur={validarCampos}
       />
 
       <FormControlLabel
@@ -107,8 +107,15 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
     setDataForm({ ...dataForm, [element]: value });
   }
 
-  function checkErrors(event) {
+  function validarCampos(event) {
     const error = VerifyError.DadosPessoais(event);
     setErrors({ ...errors, ...error });
+  }
+
+  function formValidado() {
+    for (const atribute in errors) {
+      if (errors[atribute].error) return false;
+    }
+    return true;
   }
 }

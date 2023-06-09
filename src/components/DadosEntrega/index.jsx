@@ -29,7 +29,7 @@ export default function DadosEntrega({
     <StyledForm
       onSubmit={(event) => {
         event.preventDefault();
-        aoEnviar({ ...dataForm, ...dadosColetados });
+        if (formValidado()) aoEnviar({ ...dataForm, ...dadosColetados });
       }}
     >
       <TextField
@@ -132,5 +132,10 @@ export default function DadosEntrega({
         setErrors(VerifyError.DadosEntrega(error));
       }
     }
+  }
+
+  function formValidado() {
+    if (errors.error) return false;
+    return true;
   }
 }
