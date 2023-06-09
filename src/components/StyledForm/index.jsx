@@ -8,7 +8,7 @@ const StyledForm = styled.form`
   margin: auto;
   min-width: fit-content;
   padding: 1rem 2rem;
-  width: 50vw;
+  max-width: 50vw;
 
   & span {
     margin: auto;
