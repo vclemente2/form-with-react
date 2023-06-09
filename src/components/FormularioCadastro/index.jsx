@@ -4,7 +4,7 @@ import DadosPessoais from "../DadosPessoais";
 import DadosUsuario from "../DadosUsuario";
 import { useEffect, useState } from "react";
 
-export default function FormularioCadastro({ onSubmit }) {
+export default function FormularioCadastro({ onSubmit, VerifyError }) {
   const [etapaAtual, setEtapaAtual] = useState(0);
   const [dadosColetados, setDadosColetados] = useState({});
 
@@ -15,9 +15,13 @@ export default function FormularioCadastro({ onSubmit }) {
   });
 
   const formularios = [
-    <DadosUsuario aoEnviar={coletaDados} />,
-    <DadosPessoais aoEnviar={coletaDados} />,
-    <DadosEntrega aoEnviar={coletaDados} dadosColetados={dadosColetados} />,
+    <DadosUsuario aoEnviar={coletaDados} VerifyError={VerifyError} />,
+    <DadosPessoais aoEnviar={coletaDados} VerifyError={VerifyError} />,
+    <DadosEntrega
+      aoEnviar={coletaDados}
+      dadosColetados={dadosColetados}
+      VerifyError={VerifyError}
+    />,
     <Typography variant="h5" align="center" padding="2rem">
       Cadastro concluído com sucesso!
     </Typography>

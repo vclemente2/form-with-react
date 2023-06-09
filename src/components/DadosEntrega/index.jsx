@@ -2,7 +2,11 @@ import { Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import StyledForm from "../StyledForm";
 
-export default function DadosEntrega({ aoEnviar, dadosColetados }) {
+export default function DadosEntrega({
+  aoEnviar,
+  dadosColetados,
+  VerifyError
+}) {
   const [dataForm, setDataForm] = useState({
     cep: "",
     endereco: "",
@@ -115,7 +119,8 @@ export default function DadosEntrega({ aoEnviar, dadosColetados }) {
           cidade: data.localidade,
           estado: data.uf
         });
-        verificarErros();
+
+        setErrors(VerifyError.DadosEntrega());
       } catch (error) {
         setDataForm({
           ...dataForm,
@@ -123,16 +128,9 @@ export default function DadosEntrega({ aoEnviar, dadosColetados }) {
           cidade: "",
           estado: ""
         });
-        verificarErros(error);
-      }
-    }
-  }
 
-  function verificarErros(error) {
-    if (error) {
-      setErrors({ error: true, messageError: "Cep não localizado." });
-    } else {
-      setErrors({ error: false, messageError: "" });
+        setErrors(VerifyError.DadosEntrega(error));
+      }
     }
   }
 }
