@@ -1,12 +1,9 @@
 import { Button, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import StyledForm from "../StyledForm";
+import ValidacoesCadastro from "../../contexts/ValidacoesFormulario";
 
-export default function DadosEntrega({
-  aoEnviar,
-  dadosColetados,
-  VerifyError
-}) {
+export default function DadosEntrega({ aoEnviar, dadosColetados }) {
   const [dataForm, setDataForm] = useState({
     cep: "",
     endereco: "",
@@ -22,6 +19,8 @@ export default function DadosEntrega({
   });
 
   const [submitDisabled, setSubmitDisabled] = useState(false);
+
+  const VerifyError = useContext(ValidacoesCadastro);
 
   useEffect(() => {
     if (

@@ -1,8 +1,9 @@
 import { Button, FormControlLabel, Switch, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import StyledForm from "../StyledForm";
+import ValidacoesCadastro from "../../contexts/ValidacoesFormulario";
 
-export default function DadosPessoais({ aoEnviar, VerifyError }) {
+export default function DadosPessoais({ aoEnviar }) {
   const [dataForm, setDataForm] = useState({
     nome: "",
     sobrenome: "",
@@ -27,6 +28,8 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
   });
 
   const [submitDisabled, setSubmitDisabled] = useState(true);
+
+  const VerifyError = useContext(ValidacoesCadastro);
 
   useEffect(() => {
     if (

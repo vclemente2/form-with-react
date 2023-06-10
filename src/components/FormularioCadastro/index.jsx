@@ -2,9 +2,10 @@ import { Container, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import DadosEntrega from "../DadosEntrega";
 import DadosPessoais from "../DadosPessoais";
 import DadosUsuario from "../DadosUsuario";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import ValidacoesCadastro from "../../contexts/ValidacoesFormulario";
 
-export default function FormularioCadastro({ onSubmit, VerifyError }) {
+export default function FormularioCadastro({ onSubmit }) {
   const [etapaAtual, setEtapaAtual] = useState(0);
   const [dadosColetados, setDadosColetados] = useState({});
 
@@ -15,13 +16,9 @@ export default function FormularioCadastro({ onSubmit, VerifyError }) {
   });
 
   const formularios = [
-    <DadosUsuario aoEnviar={coletaDados} VerifyError={VerifyError} />,
-    <DadosPessoais aoEnviar={coletaDados} VerifyError={VerifyError} />,
-    <DadosEntrega
-      aoEnviar={coletaDados}
-      dadosColetados={dadosColetados}
-      VerifyError={VerifyError}
-    />,
+    <DadosUsuario aoEnviar={coletaDados} />,
+    <DadosPessoais aoEnviar={coletaDados} />,
+    <DadosEntrega aoEnviar={coletaDados} dadosColetados={dadosColetados} />,
     <Typography variant="h5" align="center" padding="2rem">
       Cadastro concluído com sucesso!
     </Typography>
