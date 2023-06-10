@@ -21,6 +21,22 @@ export default function DadosEntrega({
     messageError: ""
   });
 
+  const [submitDisabled, setSubmitDisabled] = useState(false);
+
+  useEffect(() => {
+    if (
+      dataForm.cep.length === 8 &&
+      dataForm.endereco &&
+      dataForm.numero &&
+      dataForm.cidade &&
+      dataForm.estado
+    ) {
+      setSubmitDisabled(verificarErroFormulario());
+    } else {
+      setSubmitDisabled(true);
+    }
+  });
+
   useEffect(() => {
     buscarEnderecoPeloCep(dataForm.cep);
   }, [dataForm.cep]);
@@ -29,7 +45,7 @@ export default function DadosEntrega({
     <StyledForm
       onSubmit={(event) => {
         event.preventDefault();
-        if (formValidado()) aoEnviar({ ...dataForm, ...dadosColetados });
+        aoEnviar({ ...dataForm, ...dadosColetados });
       }}
     >
       <TextField
@@ -92,7 +108,7 @@ export default function DadosEntrega({
         onChange={aoAtualizar}
       />
       <span>
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={submitDisabled}>
           Cadastrar
         </Button>
       </span>
@@ -101,6 +117,8 @@ export default function DadosEntrega({
 
   async function aoAtualizar(event) {
     const element = event.target;
+    if (element.id === "cep")
+      element.value = element.value.trim().replace("-", "").replace(".", "");
     setDataForm({ ...dataForm, [element.id]: element.value });
   }
 
@@ -134,8 +152,8 @@ export default function DadosEntrega({
     }
   }
 
-  function formValidado() {
-    if (errors.error) return false;
-    return true;
+  function verificarErroFormulario() {
+    if (errors.error) return true;
+    return false;
   }
 }

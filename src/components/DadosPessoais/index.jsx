@@ -1,5 +1,5 @@
 import { Button, FormControlLabel, Switch, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StyledForm from "../StyledForm";
 
 export default function DadosPessoais({ aoEnviar, VerifyError }) {
@@ -26,18 +26,32 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
     }
   });
 
+  const [submitDisabled, setSubmitDisabled] = useState(true);
+
+  useEffect(() => {
+    if (
+      dataForm.nome.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ'\s]+$/) &&
+      dataForm.cpf.match(/^[1-9.-]+$/) &&
+      dataForm.cpf.length === 11
+    ) {
+      setSubmitDisabled(verificarErroFormulario());
+    } else {
+      setSubmitDisabled(true);
+    }
+  });
+
   return (
     <StyledForm
       onSubmit={(event) => {
         event.preventDefault();
-        if (formValidado()) aoEnviar(dataForm);
+        aoEnviar(dataForm);
       }}
     >
       <TextField
         id="nome"
         label="Nome"
         value={dataForm.nome}
-        onChange={updateData}
+        onChange={aoAtualizar}
         required
         fullWidth
         error={errors.nome.error}
@@ -49,7 +63,7 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
         id="sobrenome"
         label="Sobrenome"
         value={dataForm.sobrenome}
-        onChange={updateData}
+        onChange={aoAtualizar}
         fullWidth
         error={errors.sobrenome.error}
         helperText={errors.sobrenome.errorMessage}
@@ -60,7 +74,7 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
         id="cpf"
         label="CPF"
         value={dataForm.cpf}
-        onChange={updateData}
+        onChange={aoAtualizar}
         required
         fullWidth
         error={errors.cpf.error}
@@ -71,7 +85,7 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
       <FormControlLabel
         control={
           <Switch
-            onChange={updateData}
+            onChange={aoAtualizar}
             checked={dataForm.promocoes}
             id="promocoes"
           />
@@ -82,7 +96,7 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
       <FormControlLabel
         control={
           <Switch
-            onChange={updateData}
+            onChange={aoAtualizar}
             checked={dataForm.novidades}
             id="novidades"
           />
@@ -90,21 +104,24 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
         label="Receber Novidades"
       />
       <span>
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" disabled={submitDisabled}>
           Próximo
         </Button>
       </span>
     </StyledForm>
   );
 
-  function updateData(event) {
-    const element = event.target.id;
-    const value =
-      element === "promocoes" || element === "novidades"
-        ? event.target.checked
-        : event.target.value;
+  function aoAtualizar(event) {
+    const element = event.target;
+    if (element.id === "cpf")
+      element.value = element.value.trim().replace(".", "").replace("-", "");
 
-    setDataForm({ ...dataForm, [element]: value });
+    const value =
+      element.id === "promocoes" || element.id === "novidades"
+        ? element.checked
+        : element.value;
+
+    setDataForm({ ...dataForm, [element.id]: value });
   }
 
   function validarCampos(event) {
@@ -112,10 +129,10 @@ export default function DadosPessoais({ aoEnviar, VerifyError }) {
     setErrors({ ...errors, ...error });
   }
 
-  function formValidado() {
+  function verificarErroFormulario() {
     for (const atribute in errors) {
-      if (errors[atribute].error) return false;
+      if (errors[atribute].error) return true;
+      return false;
     }
-    return true;
   }
 }

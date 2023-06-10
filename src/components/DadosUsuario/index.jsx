@@ -1,5 +1,5 @@
 import { Button, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StyledForm from "../StyledForm";
 
 export default function DadosUsuario({ aoEnviar, VerifyError }) {
@@ -19,11 +19,26 @@ export default function DadosUsuario({ aoEnviar, VerifyError }) {
     }
   });
 
+  const [submitDisabled, setSubmitDisabled] = useState(true);
+
+  useEffect(() => {
+    if (
+      dataForm.email.match(
+        /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
+      ) &&
+      dataForm.senha.length >= 4
+    ) {
+      setSubmitDisabled(verificarErroFormulario());
+    } else {
+      setSubmitDisabled(true);
+    }
+  });
+
   return (
     <StyledForm
       onSubmit={(event) => {
         event.preventDefault();
-        if (formValidado()) aoEnviar(dataForm);
+        aoEnviar(dataForm);
       }}
     >
       <TextField
@@ -51,7 +66,7 @@ export default function DadosUsuario({ aoEnviar, VerifyError }) {
         onBlur={validarCampos}
       />
       <span>
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" disabled={submitDisabled}>
           Próximo
         </Button>
       </span>
@@ -68,10 +83,10 @@ export default function DadosUsuario({ aoEnviar, VerifyError }) {
     setErrors({ ...errors, ...error });
   }
 
-  function formValidado() {
-    for (const atribute in errors) {
-      if (errors[atribute].error) return false;
+  function verificarErroFormulario() {
+    for (const attribute in errors) {
+      if (errors[attribute].error) return true;
+      return false;
     }
-    return true;
   }
 }
